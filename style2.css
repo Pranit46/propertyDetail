@@ -1,0 +1,2024 @@
+/* =========================================================
+   VILLA.HTML — PAGE-SPECIFIC STYLES
+
+   Linked only from villa.html, alongside style.css (for the
+   shared reset/body/font — not duplicated here, see the
+   <link> order in villa.html).
+
+   Reused exactly from style.css: the color values
+   (#080807 background, #f5f2eb text at the same rgba
+   opacities), the type scale (eyebrow 10px/0.32em, title
+   clamp()+weight 300, description 14px/1.7/0.04em), the
+   overlay gradient shape, and the "sharp corners, hairline
+   borders, no border-radius" visual language — index.html
+   has no rounded corners anywhere, so neither does this file.
+========================================================= */
+
+
+/* =========================================================
+   OVERFLOW GUARD
+
+   style.css already sets body { overflow-x: hidden }, which
+   already hides any horizontal scrollbar — this upgrades that
+   to overflow-x: clip specifically for villa.html, where
+   #scene-journey's horizontal track is wider than the viewport
+   by design (driven by transform, not scrolled natively) and
+   #finale's arch/expand layers briefly exceed 100vw mid-tween:
+   clip (unlike hidden) doesn't create a new scroll container at
+   all, so there's no programmatic/scrollIntoView path that could
+   ever reveal that overflow sideways, not just no visible
+   scrollbar for it. Scoped to this file (not style.css) since
+   index.html has none of this horizontal-track machinery.
+========================================================= */
+
+body {
+  overflow-x: clip;
+}
+
+
+/* =========================================================
+   HERO WRAPPER — SCROLL-CONTROLLED VIDEO
+
+   CONSTANT YOU CAN CHANGE: wrapper height below (400vh).
+   This is what controls how much scroll distance the video
+   scrub plays out over. Taller = slower scrub.
+========================================================= */
+
+.villa-hero-wrapper {
+  position: relative;
+
+  /* --- CONSTANT: scroll distance the scrub plays over --- */
+  height: 400vh;
+}
+
+.villa-hero-stage {
+  position: sticky;
+
+  top: 0;
+
+  width: 100%;
+
+  /* svh (small viewport height — excludes the space a mobile
+     browser's address bar can reclaim) stops this stage's own
+     height from visibly growing as that bar hides mid-scroll;
+     vh first as a fallback for browsers that don't support svh,
+     which simply ignore that second declaration. */
+  height: 100vh;
+  height: 100svh;
+
+  overflow: hidden;
+
+  /* Dark fallback shown instantly, and whenever the video or
+     poster hasn't loaded (or doesn't exist) yet — matches the
+     site's existing #080807 base. */
+  background: #080807;
+
+  isolation: isolate;
+}
+
+
+/* ---------------------------------------------------------
+   HERO VIDEO
+
+   Same compositing setup as .hero-video / .arrival-video in
+   style.css (translateZ(0) + backface-visibility: hidden for
+   a stable GPU layer).
+--------------------------------------------------------- */
+
+.villa-hero-video {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center center;
+
+  background: #080807;
+
+  transform: translateZ(0);
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+}
+
+
+/* =========================================================
+   HERO OVERLAY
+
+   Same dual-gradient shape/values as .hero-overlay in
+   style.css — a horizontal darker-left vignette plus a
+   vertical darker-bottom gradient, kept subtle.
+========================================================= */
+
+.villa-hero-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.62) 0%,
+      rgba(0, 0, 0, 0.24) 48%,
+      rgba(0, 0, 0, 0.10) 100%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.10) 0%,
+      rgba(0, 0, 0, 0.55) 100%
+    );
+}
+
+
+/* =========================================================
+   HERO INTRO OVERLAY (progress 0 → 0.2)
+========================================================= */
+
+.villa-hero-intro {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 8vw;
+  right: 8vw;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  max-width: 780px;
+}
+
+.villa-hero-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+
+  font-size: 10px;
+
+  letter-spacing: 0.32em;
+
+  color: rgba(245, 242, 235, 0.65);
+}
+
+.villa-hero-eyebrow span {
+  width: 45px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.55);
+}
+
+.villa-hero-title {
+  font-size: clamp(42px, 8vw, 120px);
+
+  font-weight: 300;
+
+  line-height: 0.88;
+
+  letter-spacing: -0.055em;
+
+  text-transform: uppercase;
+}
+
+.villa-hero-subline {
+  margin-top: 28px;
+
+  max-width: 520px;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  letter-spacing: 0.04em;
+
+  color: rgba(245, 242, 235, 0.68);
+}
+
+
+/* ---------------------------------------------------------
+   BUTTONS
+
+   Not present anywhere on the existing site (index.html has
+   no buttons or hover effects at all) — new, but kept in the
+   same restrained language: sharp corners, hairline borders,
+   uppercase micro-type, the same text colors.
+--------------------------------------------------------- */
+
+.villa-hero-actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 44px;
+
+  pointer-events: auto;
+}
+
+.villa-btn {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 16px 32px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 400;
+
+  letter-spacing: 0.2em;
+
+  text-transform: uppercase;
+
+  text-decoration: none;
+
+  border-radius: 0;
+
+  cursor: pointer;
+
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+
+.villa-btn-primary {
+  background: #f5f2eb;
+
+  color: #080807;
+
+  border: 1px solid #f5f2eb;
+}
+
+.villa-btn-primary:hover {
+  background: rgba(245, 242, 235, 0.82);
+}
+
+.villa-btn-secondary {
+  background: transparent;
+
+  color: #f5f2eb;
+
+  border: 1px solid rgba(245, 242, 235, 0.45);
+}
+
+.villa-btn-secondary:hover {
+  border-color: rgba(245, 242, 235, 0.85);
+
+  background: rgba(245, 242, 235, 0.06);
+}
+
+
+/* =========================================================
+   SCROLL INDICATOR
+
+   Same shape/values as .scroll-indicator in style.css.
+========================================================= */
+
+.villa-scroll-indicator {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 50%;
+
+  bottom: 6vh;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 14px;
+
+  font-size: 9px;
+
+  letter-spacing: 0.25em;
+
+  color: rgba(245, 242, 235, 0.55);
+}
+
+.villa-scroll-line {
+  width: 1px;
+
+  height: 45px;
+
+  background: rgba(245, 242, 235, 0.45);
+}
+
+
+/* =========================================================
+   HERO CLOSING OVERLAY (progress ~0.85 → 1)
+========================================================= */
+
+.villa-hero-closing {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 0;
+  right: 0;
+
+  bottom: 10vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  text-align: center;
+
+  padding: 0 8vw;
+}
+
+/*
+  LOGO PLACEHOLDER — reserved, centred, empty.
+  Drop the final blueprint-reveal logo (image or inline SVG)
+  into the matching <div class="villa-hero-logo-slot"> in
+  villa.html. Sized so a logo drops in pre-centred with no
+  further CSS changes needed.
+*/
+.villa-hero-logo-slot {
+  width: 160px;
+  height: 72px;
+
+  margin-bottom: 24px;
+}
+
+.villa-hero-closing-line {
+  font-size: clamp(16px, 2.2vw, 22px);
+
+  font-weight: 300;
+
+  letter-spacing: 0.02em;
+
+  color: rgba(245, 242, 235, 0.85);
+}
+
+.villa-hero-closing .villa-btn {
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   RESPONSIVE — hero text works from 360px wide upward
+========================================================= */
+
+@media (max-width: 560px) {
+
+  .villa-hero-intro {
+    left: 6vw;
+    right: 6vw;
+  }
+
+  .villa-hero-title {
+    font-size: clamp(34px, 11vw, 70px);
+  }
+
+  .villa-hero-subline {
+    font-size: 13px;
+  }
+
+  .villa-hero-actions {
+    gap: 12px;
+  }
+
+  .villa-btn {
+    padding: 14px 24px;
+
+    font-size: 10px;
+  }
+
+  .villa-hero-closing {
+    bottom: 7vh;
+  }
+
+  .villa-hero-closing-line {
+    font-size: 15px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+
+   Mirrors script.js's approach: skip the scrub smoothing and
+   the entrance/reveal animations, show everything in its
+   final, fully visible state. The closing overlay (a
+   secondary flourish gated to the very end of a 400vh scroll)
+   is hidden rather than made to awkwardly co-exist in the
+   same space as the now-always-visible intro overlay — see
+   the comment in script2.js for the full reasoning.
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .villa-hero-intro {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+
+  .villa-scroll-indicator,
+  .villa-hero-closing {
+    display: none;
+  }
+
+}
+
+
+/* =========================================================
+   SCROLL STORY — FOUNDATION
+
+   Design tokens, scoped to .story so they can't leak into (or
+   clash with) the hero rules above. Each later scene styles
+   itself with these, plus whatever it needs of its own.
+
+   FONTS: there is no web font anywhere on this site — index.html
+   and villa.html both just inherit body's system stack
+   (Arial, Helvetica, sans-serif) from style.css. So "reuse the
+   display and body fonts" means: don't introduce one here
+   either, both .display and .label simply inherit it. For the
+   italic requirement — there's no @font-face/web-font loading
+   pipeline to add an italic "cut" to in the first place; Arial
+   ships a true Arial Italic on Windows/macOS (and a genuine
+   italic substitute, e.g. Liberation Sans Italic, elsewhere),
+   so plain font-style: italic already renders a real italic,
+   not a synthesized oblique.
+========================================================= */
+
+.story {
+  --paper: #efece6;
+  --ink: #1c1b19;
+  --ink-soft: rgba(28, 27, 25, 0.55);
+  --line: rgba(28, 27, 25, 0.15);
+
+  position: relative;
+
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.story section {
+  position: relative;
+
+  width: 100%;
+}
+
+
+/* ---------------------------------------------------------
+   TYPE
+--------------------------------------------------------- */
+
+.story .display {
+  /* Instrument Serif, loaded in villa.html's <head> — falls
+     back to the site's plain system stack if the Google Fonts
+     request ever fails, same stack body already inherits. */
+  font-family: "Instrument Serif", Arial, Helvetica, sans-serif;
+
+  font-size: clamp(2.6rem, 6.5vw, 6.5rem);
+
+  font-weight: 400;
+
+  line-height: 1.02;
+
+  letter-spacing: -0.02em;
+}
+
+.story .display em {
+  font-style: italic;
+}
+
+.story .label {
+  display: inline-block;
+
+  font-size: 0.7rem;
+
+  letter-spacing: 0.22em;
+
+  text-transform: uppercase;
+
+  color: var(--ink-soft);
+}
+
+
+/* ---------------------------------------------------------
+   ARCH — rounded-top image frame
+
+   A new motif for the story section specifically (the hero
+   components above are deliberately sharp-cornered — this is
+   an intentional departure for the story, not an inconsistency).
+--------------------------------------------------------- */
+
+.story .arch {
+  border-radius: 999px 999px 0 0;
+
+  overflow: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   FIGURES / IMAGES
+
+   Every scene's images are expected to sit in a sized
+   <figure>; the image itself always fills it.
+--------------------------------------------------------- */
+
+.story figure {
+  position: relative;
+
+  margin: 0;
+}
+
+.story figure img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+
+/* =========================================================
+   #scene-intro — "Step inside the everyday"
+
+   Desktop (default below): a 100vh pinned stage. See
+   script2.js's registerScene() desktop()/mobile() for the
+   scrub timeline / fade-up this sets up on top of this CSS.
+
+   This file renders the complete, readable rest state on its
+   own — label, headline, all four captioned arches and "The
+   amenities" label are all visible with no JS at all. Only
+   script2.js's desktop()/mobile() functions (run from inside
+   gsap.matchMedia, i.e. only when motion is wanted) apply any
+   hidden start state on top of this.
+========================================================= */
+
+.scene-intro {
+  /* svh fallback-then-override, see .villa-hero-stage's comment
+     for why (also applies above 900px, not just mobile, since
+     desktop browser chrome can occasionally resize too). */
+  height: 100vh;
+  height: 100svh;
+
+  overflow: hidden;
+
+  background: var(--paper);
+
+  /*
+    Shared terms for the headline/arches desktop layout below.
+    --arch-w/--arch-h mirror .scene-intro-arch's own width and
+    .scene-intro-arch .arch's own height exactly (those rules
+    reference these same variables, instead of repeating the
+    formula) specifically so .scene-intro-headline's bottom
+    calc and the arch's actual rendered height can never drift
+    out of sync with each other — see .scene-intro-headline's
+    comment for why that sync is what makes the gap between
+    them hold steady across viewport heights. --caption-h
+    approximates .scene-intro-arch figcaption's rendered height.
+    38px splits the difference between a 1-line caption (~30px,
+    e.g. "The kitchen" at wide arches) and a 2-line one (~45px,
+    e.g. "The living room" wrapping once the arches narrow below
+    ~1200px viewport width) — there's no clean way to derive the
+    exact figure here without duplicating the caption's own
+    font-size, and the gap target only needs to stay in a tight
+    band, not hit one exact number.
+  */
+  --arch-w: max(120px, 13vw);
+  --arch-h: calc(var(--arch-w) * 4 / 3 - 6vh);
+  --caption-h: 38px;
+  --arches-bottom: 5svh;
+}
+
+.scene-intro-label {
+  position: absolute;
+
+  top: 6vh;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+
+/*
+  bottom-anchored (not top: Xvh) specifically so the gap to the
+  arches below stays correct no matter how tall the headline
+  itself renders — 1 line vs 2, this font-size vs a larger one.
+  Anchoring from the bottom means a taller headline just grows
+  upward, never changing where its own bottom edge sits relative
+  to the arches.
+
+  The formula walks up from the viewport's bottom edge: the
+  arches' own bottom anchor (--arches-bottom) + the arches row's
+  own height (--arch-h for the image, --caption-h for its
+  caption) + the gap we actually want (7svh) = how far up this
+  headline's bottom edge needs to sit. Confirmed via Playwright
+  this holds the headline-to-arches gap at a constant ~7svh at
+  1440x720, 1440x900 and 1024x768 despite --arch-h's own "-6vh"
+  term not being a flat percentage of viewport height — because
+  the exact same --arch-h is used here and on .scene-intro-arch
+  .arch below, that non-linearity cancels out instead of
+  producing two numbers that drift apart.
+*/
+.scene-intro-headline {
+  position: absolute;
+
+  bottom: calc(var(--arches-bottom) + var(--arch-h) + var(--caption-h) + 7svh);
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 100%;
+  max-width: 15em;
+
+  padding: 0 6vw;
+
+  text-align: center;
+}
+
+/*
+  ID-scoped (#scene-intro .scene-intro-headline) rather than the
+  class alone — ".story .display" (2 classes) would otherwise
+  silently win over a single-class ".scene-intro-headline" for
+  every property here (font-size/weight/line-height/letter-
+  spacing all overlap with it), the same specificity conflict
+  already found and fixed more than once this session, and
+  #scene-intro's ID trivially outranks it regardless of source
+  order. text-wrap: balance keeps the two/three lines even
+  instead of one long line and a short trailing one.
+*/
+#scene-intro .scene-intro-headline {
+  font-weight: 400;
+
+  font-size: clamp(2.8rem, 7.2vw, 7.2rem);
+
+  line-height: 1.05;
+
+  letter-spacing: -0.02em;
+
+  text-wrap: balance;
+}
+
+/*
+  bottom: var(--arches-bottom) (5svh, not the old 2vh) both gives
+  the captions below at least 4svh of clear space on their own
+  (comfortably above that minimum) and feeds the same value into
+  .scene-intro-headline's bottom calc above, so the two stay in
+  sync — see that rule's comment.
+*/
+.scene-intro-arches {
+  position: absolute;
+
+  left: 50%;
+  bottom: var(--arches-bottom);
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 2vw;
+}
+
+.scene-intro-arch {
+  width: var(--arch-w);
+
+  text-align: center;
+}
+
+/*
+  The .arch clip (rounded top, overflow hidden) is applied to
+  this inner wrapper rather than the <figure> itself, so the
+  figcaption below can sit outside the clipped box instead of
+  being cut off by it.
+
+  The "cropped by about 6vh" rest look comes from making this
+  box shorter than the image's natural 3:4 ratio (not from
+  shifting the whole figure — including its caption — below the
+  fold, which would crop the caption out too). object-position:
+  top on the image below keeps the crop coming only off the
+  bottom of the photo.
+*/
+.scene-intro-arch .arch {
+  width: 100%;
+
+  height: var(--arch-h);
+}
+
+.scene-intro-arch .arch img {
+  object-position: top center;
+}
+
+.scene-intro-arch figcaption {
+  margin-top: 14px;
+}
+
+/*
+  Scoped to ".scene-intro-arch figcaption.label" (not just
+  ".scene-intro-arch figcaption") specifically so the extra
+  class pushes this to 2 classes + 1 element, reliably beating
+  the foundation's ".story .label" (2 classes) for color — the
+  same specificity conflict already found and fixed more than
+  once this session. line-height is set explicitly (rather than
+  left at the browser default) so all four captions render at
+  the exact same line-height regardless of font metrics, keeping
+  their top offset below each arch identical.
+*/
+.scene-intro-arch figcaption.label {
+  color: rgba(28, 27, 25, 0.7);
+
+  line-height: 1.4;
+}
+
+.scene-intro-amenities {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+
+/* ---------------------------------------------------------
+   #scene-intro — mobile (900px and below)
+
+   No pin/stage — normal document flow, 2x2 grid, "The
+   amenities" is a plain static label underneath.
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  .scene-intro {
+    height: auto;
+
+    overflow: visible;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 7vh;
+
+    padding: 12vh 6vw 10vh;
+  }
+
+  .scene-intro-label {
+    position: static;
+
+    transform: none;
+  }
+
+  .scene-intro-headline {
+    position: static;
+
+    transform: none;
+
+    max-width: 560px;
+
+    padding: 0;
+  }
+
+  .scene-intro-arches {
+    position: static;
+
+    bottom: auto;
+    left: auto;
+
+    transform: none;
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 5vw 4vw;
+
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .scene-intro-arch {
+    width: 100%;
+  }
+
+  /*
+    The 6vh bottom-crop is a desktop-only compositional device
+    tied to the pinned stage — on mobile the grid just shows
+    each photo at its full natural 3:4 ratio.
+  */
+  .scene-intro-arch .arch {
+    height: auto;
+
+    aspect-ratio: 3 / 4;
+  }
+
+  .scene-intro-arch .arch img {
+    object-position: center;
+  }
+
+  .scene-intro-amenities {
+    position: static;
+
+    top: auto;
+    left: auto;
+
+    transform: none;
+  }
+
+}
+
+
+/* =========================================================
+   #scene-amenities — "Twelve ways to spend a day"
+
+   Desktop (default below): a 100vh pinned stage, two columns.
+   See script2.js's registerScene() for the wipe-transition
+   timeline this sets up on top of this CSS.
+
+   Rest state (no JS): heading and all five rows are fully
+   readable; the panel shows item 1's image at full size — the
+   other four sit clipped-to-nothing behind it (this is the
+   design itself, not a JS-only hidden state — a stack of
+   photos only ever shows one at a time, with or without
+   scroll-driven interaction. Only the panel's entrance scale/
+   fade and the per-item transitions are introduced by JS,
+   inside matchMedia).
+========================================================= */
+
+.scene-amenities {
+  /* svh fallback-then-override, see .villa-hero-stage's comment. */
+  height: 100vh;
+  height: 100svh;
+
+  overflow: hidden;
+
+  background: var(--paper);
+
+  display: flex;
+
+  align-items: stretch;
+}
+
+.scene-amenities-left {
+  position: relative;
+
+  width: 45%;
+
+  padding: 9vh 3vw 7vh 6vw;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+}
+
+.scene-amenities-headline {
+  margin-top: 24px;
+}
+
+.scene-amenities-panel {
+  position: relative;
+
+  width: 34vw;
+
+  /*
+    Deliberately NOT aspect-ratio here. With this panel's stacked,
+    position:absolute; inset:0 image figures inside (each holding
+    an <img> with real width/height attributes and height:100%),
+    aspect-ratio creates a genuine circular-sizing bug in Chromium:
+    the figures' height can't resolve from the panel until the
+    panel's own aspect-ratio-derived height resolves, so the
+    images briefly fall back to their own native intrinsic size
+    (e.g. 1672x941) during that resolution — and that fallback
+    then gets counted into the panel's size instead of being
+    ignored like other position:absolute content normally is.
+    Confirmed by bisection: removing either aspect-ratio or the
+    images' width/height attributes removes the bug.
+
+    height:42.5vw is mathematically identical to "34vw at a 4:5
+    ratio" (34 * 5/4 = 42.5) but is a direct, non-circular value,
+    so it doesn't trigger this. The 48vh cap keeps the panel from
+    overflowing the 100vh stage on short/wide viewports, where
+    42.5vw (plus the heading above it) would otherwise be taller
+    than the available space.
+  */
+  height: min(42.5vw, 48vh);
+}
+
+/*
+  Scoped to .scene-amenities-panel (rather than the bare
+  .scene-amenities-image class) specifically so this beats the
+  foundation's ".story figure { position: relative }" rule in
+  the cascade. Both rules match these elements (they're
+  <figure>s inside .story), and ".story figure" was WINNING —
+  its specificity (class + element) is higher than a single
+  class selector. That silently left these five images at
+  position:relative, so instead of stacking on top of each
+  other (inset:0 of the panel) they sat in normal flow, one
+  below the next, each pushed hundreds of pixels further down
+  the page — which is why the panel only ever showed the first
+  one: the rest weren't hidden, they were just far below it.
+  Confirmed via getBoundingClientRect before fixing this, not
+  just by reasoning about specificity.
+*/
+.scene-amenities-panel .scene-amenities-image {
+  position: absolute;
+
+  inset: 0;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  clip-path: inset(100% 0% 0% 0%);
+}
+
+.scene-amenities-panel .scene-amenities-image.is-active {
+  clip-path: inset(0% 0% 0% 0%);
+}
+
+/*
+  Mobile has its own per-row image instead (see below). Not
+  inside a <figure>, so .story figure img doesn't reach it —
+  needs its own width/height/object-fit or it renders at its
+  raw natural pixel size (e.g. 1672x941) instead of filling
+  this box.
+*/
+.scene-amenities-row-image {
+  display: none;
+}
+
+.scene-amenities-row-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.scene-amenities-list {
+  width: 55%;
+
+  padding: 9vh 6vw 7vh 3vw;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.scene-amenities-row {
+  display: flex;
+
+  align-items: baseline;
+
+  gap: 24px;
+
+  padding: 3.2vh 0;
+
+  opacity: 0.3;
+}
+
+.scene-amenities-row.is-active {
+  opacity: 1;
+}
+
+.scene-amenities-row + .scene-amenities-row {
+  border-top: 1px solid var(--line);
+}
+
+.scene-amenities-row-number {
+  flex-shrink: 0;
+
+  width: 2em;
+}
+
+.scene-amenities-row-name {
+  font-size: clamp(1.4rem, 2.2vw, 2.2rem);
+
+  font-weight: 400;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.01em;
+}
+
+.scene-amenities-row-desc {
+  margin-top: 8px;
+
+  font-size: 0.85rem;
+
+  line-height: 1.6;
+
+  color: var(--ink-soft);
+}
+
+
+/* ---------------------------------------------------------
+   #scene-amenities — mobile (900px and below)
+
+   No pin/panel — a single column of stacked cards, each with
+   its own full image on top, fading up as it's scrolled to.
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  .scene-amenities {
+    height: auto;
+
+    overflow: visible;
+
+    display: block;
+
+    padding: 12vh 6vw 10vh;
+  }
+
+  .scene-amenities-left {
+    width: 100%;
+
+    padding: 0;
+
+    display: block;
+  }
+
+  .scene-amenities-headline {
+    margin-top: 20px;
+  }
+
+  .scene-amenities-panel {
+    display: none;
+  }
+
+  .scene-amenities-list {
+    width: 100%;
+
+    padding: 7vh 0 0;
+
+    display: block;
+  }
+
+  .scene-amenities-row {
+    display: block;
+
+    padding: 0 0 7vh;
+
+    opacity: 1;
+  }
+
+  .scene-amenities-row.is-active {
+    opacity: 1;
+  }
+
+  .scene-amenities-row + .scene-amenities-row {
+    border-top: none;
+  }
+
+  .scene-amenities-row-image {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 4 / 3;
+
+    overflow: hidden;
+
+    margin-bottom: 20px;
+  }
+
+  /*
+    In the block-stacked mobile layout the number simply becomes
+    a small label sitting above the name — the same "small label
+    above a headline" pattern already used everywhere else on
+    this site (hero-eyebrow, arrival-label, scene-intro-label).
+  */
+  .scene-amenities-row-number {
+    display: block;
+
+    width: auto;
+
+    margin-bottom: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   #scene-journey — merged arch (lead) + horizontal gallery
+
+   Replaces what were two separate pinned sections
+   (#scene-slower, #scene-gallery) with one pin, one master
+   timeline (see script2.js's registerScene() for #scene-journey)
+   — the motion now reads as a single continuous line instead of
+   leaving a dead gap between two pins.
+
+   #scene-journey itself carries no padding/margin on purpose —
+   .journey (the stage) is the one that's 100vh/overflow:hidden,
+   so there's no blank band before or after the pin. All spacing
+   between the lead and the panels lives on margin-right (lead,
+   then each panel except the last), not on the track's padding.
+
+   Rest state (no JS): everything simply sits in normal flow,
+   fully visible/readable, laid out as a single (too-wide)
+   scrollable row — same "plain CSS = readable" rule as the
+   scene this replaces, and the same reason the mobile/reduced-
+   motion block below exists (see its own comment).
+
+   Reused inner class names/content (per the merge brief):
+   .scene-slower-text/-label/-headline/-paragraph/-link/-figure
+   (+ .arch) for the lead, and .scene-gallery-panel/-image/-text/
+   -label/-headline for the three panels — only the structural
+   wrapper classes (.journey, .journey__track, .journey__lead)
+   are new.
+========================================================= */
+
+.journey {
+  /* svh fallback-then-override, see .villa-hero-stage's comment. */
+  height: 100vh;
+  height: 100svh;
+
+  overflow: hidden;
+
+  background: var(--paper);
+
+  /* Strength knob for .scene-gallery-image::after's darkening
+     overlay below — 1 = the values as given, scale up/down to
+     tweak without touching the gradient itself. */
+  --panel-shade: 1;
+}
+
+.journey__track {
+  position: relative;
+
+  display: flex;
+
+  flex-wrap: nowrap;
+
+  align-items: center;
+
+  height: 100%;
+
+  width: max-content;
+
+  /* So the last panel can finish centred in the viewport at
+     max scroll instead of flush against the right edge —
+     (100vw - panel width) / 2, both viewport-relative so this
+     holds regardless of actual pixel width. Reset to 0 on
+     mobile below, where .journey__track stops being a
+     horizontally-driven row at all. */
+  padding-right: 19vw;
+}
+
+.journey__lead {
+  width: 100vw;
+  height: 100%;
+
+  flex-shrink: 0;
+
+  margin-right: 6vw;
+
+  padding: 0 6vw;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.scene-slower-text {
+  width: 45%;
+
+  max-width: 480px;
+}
+
+.scene-slower-headline {
+  margin-top: 24px;
+}
+
+.scene-slower-paragraph {
+  margin-top: 28px;
+
+  max-width: 420px;
+
+  font-size: 0.95rem;
+
+  line-height: 1.7;
+
+  color: var(--ink-soft);
+}
+
+/*
+  .villa-btn supplies the shared structural styling (padding,
+  uppercase, letter-spacing, transition); only the colour scheme
+  is scene-specific here, since .villa-btn-primary/-secondary are
+  both tuned for sitting on a dark hero video, not this scene's
+  pale --paper background.
+*/
+.journey__start {
+  margin-top: 36px;
+
+  background: transparent;
+
+  color: var(--ink);
+
+  border: 1px solid var(--line);
+}
+
+.journey__start:hover {
+  border-color: var(--ink);
+
+  background: rgba(28, 27, 25, 0.04);
+}
+
+.journey__start:disabled {
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.scene-slower-figure {
+  width: 32vw;
+
+  flex-shrink: 0;
+}
+
+.scene-slower-figure .arch {
+  width: 100%;
+
+  height: 80vh;
+}
+
+.scene-gallery-panel {
+  position: relative;
+
+  flex: 0 0 auto;
+
+  width: 62vw;
+  height: 70vh;
+
+  margin-right: 6vw;
+}
+
+.scene-gallery-panel:last-child {
+  margin-right: 0;
+}
+
+.scene-gallery-image {
+  width: 100%;
+  height: 100%;
+
+  margin: 0;
+
+  overflow: hidden;
+}
+
+/*
+  Darkens the photo so the white text sitting on top of it (both
+  overlaid, see .scene-gallery-text below) stays readable without
+  needing the mix-blend-mode trick the previous version used —
+  stronger at the bottom (where the text sits) fading out toward
+  the top, plus a flat wash over the whole image so even its
+  brightest areas stay readable. Lives on the figure (::after),
+  not the img itself, so it stays put and aligned while the img
+  underneath keeps parallaxing. --panel-shade (set on .journey)
+  is the single knob for the whole overlay's strength.
+*/
+.scene-gallery-image::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(12, 9, 6, calc(0.62 * var(--panel-shade))) 0%,
+      rgba(12, 9, 6, calc(0.3 * var(--panel-shade))) 45%,
+      rgba(12, 9, 6, calc(0.1 * var(--panel-shade))) 100%
+    ),
+    rgba(12, 9, 6, calc(0.12 * var(--panel-shade)));
+}
+
+.scene-gallery-text {
+  position: absolute;
+
+  z-index: 2;
+
+  left: 3vw;
+  bottom: 4vh;
+
+  max-width: 70%;
+
+  /* Decorative overlay text — the image behind it stays the
+     interactive/clickable element, nothing here needs to
+     intercept pointer events. */
+  pointer-events: none;
+}
+
+/*
+  Scoped three classes deep (.scene-gallery-panel
+  .scene-gallery-text .scene-gallery-label/-headline) so these
+  reliably beat the foundation's ".story .label" / ".story
+  .display" rules (both 2 classes) regardless of source order —
+  the same class of specificity conflict already found and
+  fixed once this session (.story figure vs .scene-amenities-
+  image), not repeating it here.
+
+  Plain white + text-shadow now (no mix-blend-mode) — the
+  darkening overlay above is what keeps this readable against
+  every photo, uniformly, instead of relying on blend math
+  against whatever's directly behind each glyph.
+*/
+.scene-gallery-panel .scene-gallery-text .scene-gallery-label {
+  margin-bottom: 18px;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+.scene-gallery-panel .scene-gallery-text .scene-gallery-headline {
+  font-size: clamp(2rem, 4.2vw, 4.5rem);
+
+  line-height: 1.05;
+
+  color: #fff;
+
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+}
+
+
+/* ---------------------------------------------------------
+   #scene-journey — mobile (900px and below), OR reduced motion
+   at any width
+
+   No pin, no horizontal track — the lead (text, then the arch
+   at 80% width) stacks above the three panels. Each panel's
+   label/headline stay overlaid on its image exactly as on
+   desktop (see .scene-gallery-text above) — nothing panel-text-
+   specific needs overriding here, only the stacking layout.
+
+   This is the one scene where "skip the animation" genuinely
+   isn't enough on its own: the other scenes just release their
+   pin and sit as one normal, fully-visible viewport when
+   desktop()'s JS doesn't run — but here, without the JS-driven
+   horizontal drive, the panels would stay off past the right
+   edge, permanently clipped by .journey's own overflow:hidden,
+   with no pin/scroll-jacking left to ever bring them into view.
+   So this block applies under EITHER condition (note the comma
+   — it's an OR, not nested).
+--------------------------------------------------------- */
+
+@media (max-width: 900px), (prefers-reduced-motion: reduce) {
+
+  .journey {
+    height: auto;
+
+    overflow: visible;
+
+    padding: 12vh 6vw 10vh;
+  }
+
+  .journey__track {
+    display: block;
+
+    height: auto;
+    width: auto;
+
+    padding-right: 0;
+  }
+
+  .journey__lead {
+    width: 100%;
+    height: auto;
+
+    flex-shrink: initial;
+
+    margin-right: 0;
+    margin-bottom: 10vh;
+
+    padding: 0;
+
+    display: block;
+  }
+
+  .scene-slower-text {
+    width: 100%;
+
+    max-width: 520px;
+  }
+
+  .scene-slower-figure {
+    width: 80%;
+
+    margin: 7vh auto 0;
+  }
+
+  .scene-slower-figure .arch {
+    height: auto;
+
+    aspect-ratio: 3 / 4;
+  }
+
+  .scene-gallery-panel {
+    width: 100%;
+    height: auto;
+
+    margin: 0 0 10vh;
+  }
+
+  .scene-gallery-panel:last-child {
+    margin-bottom: 0;
+  }
+
+  .scene-gallery-image {
+    height: auto;
+
+    aspect-ratio: 4 / 5;
+  }
+
+}
+
+
+/* =========================================================
+   #finale — pinned, one master timeline (finaleTl), three
+   phases total; this build implements Phase 1 only (the pool
+   card expanding to full-bleed). See script2.js's
+   registerScene() for finaleTl and the PHASE 2/PHASE 3
+   insertion points.
+
+   Rest state (no JS): the pool card already sits at its FINAL
+   size (clip-path: inset(0% round 0px), i.e. full-bleed), the
+   bottom overlay and headline are both visible/readable, the
+   video at its natural scale — script2.js's gsap.set() calls
+   (inside matchMedia) are what introduce the "small inset card
+   / hidden overlay / oversized video" start states on top of
+   this, same rule as every other scene. The video element's
+   own opacity is untouched here — see script2.js's
+   setupFinaleVideo() for why that one is handled reactively
+   (on the "playing" event) rather than hidden upfront: hiding
+   it by default would also hide its native poster image
+   whenever the video never actually plays (missing file,
+   autoplay rejected, reduced motion, Save-Data), which would
+   break the "still image" fallback this scene is required to
+   have.
+========================================================= */
+
+#finale {
+  /* svh fallback-then-override, see .villa-hero-stage's comment. */
+  height: 100vh;
+  height: 100svh;
+
+  overflow: hidden;
+
+  background: var(--paper);
+}
+
+/*
+  The inset/radius are three separate custom properties, not
+  one clip-path string tweened directly — GSAP's generic string
+  interpolator diffs numeric tokens by position, but the browser
+  itself normalizes "22% 28% 22% 28% round 14px" down to
+  "22% 28% round 14px" (and an all-zero/all-equal end state down
+  further still, dropping "round 0px" entirely once the radius
+  is 0) before a tween ever gets to read it back — so the start
+  and end strings end up with mismatched token counts regardless
+  of how they're written, and the radius briefly ballooned to
+  ~250px mid-transition (confirmed via Playwright). Three plain
+  single-value custom properties sidestep that: each tweens as
+  one clean number, with no shorthand for the browser to collapse.
+*/
+.finale__pool {
+  position: absolute;
+  inset: 0;
+
+  overflow: hidden;
+
+  --pool-inset-y: 0%;
+  --pool-inset-x: 0%;
+  --pool-radius: 0px;
+
+  clip-path: inset(var(--pool-inset-y) var(--pool-inset-x) round var(--pool-radius));
+}
+
+.finale__video {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
+.finale__pool-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
+
+  pointer-events: none;
+}
+
+/*
+  ID-scoped (#finale .finale__headline) rather than a class
+  alone, since this headline also carries .display — ".story
+  .display" (2 classes) would otherwise silently win over a
+  single-class ".finale__headline" for any overlapping property
+  (the same specificity conflict already found and fixed more
+  than once this session), and #finale's ID trivially outranks
+  it regardless of source order.
+*/
+#finale .finale__headline {
+  position: absolute;
+
+  z-index: 2;
+
+  left: 6vw;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  max-width: 36vw;
+
+  color: #fff;
+}
+
+
+/* ---------------------------------------------------------
+   #finale — Phase 2 (arch sweep, statement, logo, thumbnail)
+
+   Rest state (no JS): the arch sits already risen (no
+   transform), fully covering the pool — later phases naturally
+   superseding earlier ones' rest state is the same pattern
+   Phase 1 itself relies on (its own rest state is "already
+   expanded"). Now that Phase 3 exists, .finale__logo/.finale__
+   statement/.finale__thumb are no longer the latest thing in the
+   sequence either — Phase 3 fades all three out, so THEIR rest
+   state becomes hidden too (opacity:0), the same way Phase 2's
+   arch rising already hid Phase 1's pool. .finale__expand is the
+   opposite case: it used to default to hidden here (Phase 2 was
+   the latest phase, and a small clip-path-less thumbnail has no
+   sensible static look) but now that Phase 3 grows it to a full,
+   un-clipped rooftop image — which IS a perfectly sensible static
+   default — it defaults to visible instead (see its own rule,
+   and Phase 3's below for the image-level opacity split).
+--------------------------------------------------------- */
+
+.finale__arch {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  z-index: 2;
+
+  width: 100vw;
+  height: 130vh;
+
+  border-radius: 50vw 50vw 0 0;
+
+  background: var(--paper);
+}
+
+/*
+  Cancels exactly the extra height .finale__arch has beyond the
+  100vh viewport (130vh - 100vh = 30vh) — .finale__logo/
+  .finale__statement inside it use plain top:6vh / top:50% as if
+  they sat directly against the viewport; without this wrapper
+  those percentages/vh units would resolve against the arch's
+  own 130vh box instead, landing the logo at top:-216px (6vh of
+  130vh, offset by the arch's own 30vh overhang) — fully
+  off-screen above the viewport (confirmed via Playwright).
+*/
+.finale__arch-content {
+  position: absolute;
+
+  top: 30vh;
+  left: 0;
+
+  width: 100%;
+  height: 100vh;
+}
+
+#finale .finale__logo {
+  position: absolute;
+
+  top: 6vh;
+  left: 6vw;
+
+  z-index: 3;
+
+  font-size: 1.6rem;
+
+  font-weight: 400;
+
+  letter-spacing: -0.02em;
+
+  color: var(--ink);
+
+  opacity: 0;
+}
+
+#finale .finale__statement {
+  position: absolute;
+
+  z-index: 3;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  max-width: 50vw;
+
+  text-align: center;
+
+  color: var(--ink);
+
+  opacity: 0;
+}
+
+.finale__expand {
+  position: absolute;
+  inset: 0;
+
+  z-index: 3;
+
+  overflow: hidden;
+}
+
+/*
+  Scoped two classes deep (.finale__expand .finale__expand-image)
+  — the foundation's ".story figure { position: relative }" rule
+  (class + element, specificity 0,1,1) otherwise silently beats a
+  single-class ".finale__expand-image" (0,1,0), same conflict
+  already found and fixed more than once this session. Left
+  un-scoped, skyline/rooftop sat in normal document flow instead
+  of overlapping via inset:0 — skyline (nearly transparent by
+  Phase 3's end) rendered first, pushing the fully-opaque rooftop
+  below/off-screen instead of visible underneath it (confirmed
+  via Playwright: the near-full-screen image looked washed out to
+  almost nothing instead of clearly showing rooftop).
+*/
+.finale__expand .finale__expand-image {
+  position: absolute;
+  inset: 0;
+
+  margin: 0;
+}
+
+.finale__expand-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* Rest state is Phase 3's own end look: skyline (the Phase 2
+   thumbnail's image) faded fully out, rooftop fully visible
+   beneath it — see the Phase 3 section below for the crossfade
+   itself. */
+.finale__expand-image--skyline {
+  z-index: 2;
+
+  opacity: 0;
+}
+
+.finale__expand-image--rooftop {
+  z-index: 1;
+
+  opacity: 1;
+}
+
+.finale__thumb {
+  position: absolute;
+
+  right: 4vw;
+  bottom: 8vh;
+
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  opacity: 0;
+
+  /* Decorative teaser, not yet a real link/control. */
+  pointer-events: none;
+}
+
+/* Never rendered — purely a geometry reference read via
+   getBoundingClientRect() in script2.js to compute .finale__
+   expand's clip-path/transform-origin. Kept inside .finale__
+   thumb (a flex row with the label) specifically so its own
+   rendered position/size already accounts for the label sitting
+   beside it, rather than needing that math done by hand. */
+.finale__thumb-slot {
+  width: 12vw;
+  min-width: 120px;
+
+  aspect-ratio: 3 / 2;
+}
+
+#finale .finale__thumb-label {
+  white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   #finale — Phase 3 (thumbnail grows to full-screen rooftop,
+   closing headline + CTA)
+
+   Rest state (no JS): fully visible — a bottom-left headline,
+   gradient and CTA over a full-screen image is a completely
+   sensible static default (unlike Phase 2's small thumbnail,
+   nothing here needs JS-computed geometry to make sense), so
+   this is simply the end of the cascade: the last phase in the
+   sequence is the one rest state actually shows.
+--------------------------------------------------------- */
+
+.finale__final {
+  position: absolute;
+  inset: 0;
+
+  z-index: 5;
+
+  /* The gradient/headline themselves intercept nothing — only
+     the CTA re-enables pointer-events for itself below. */
+  pointer-events: none;
+}
+
+.finale__final-overlay {
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
+}
+
+.finale__final-content {
+  position: absolute;
+
+  left: 6vw;
+  bottom: 8vh;
+
+  max-width: 40vw;
+}
+
+#finale .finale__final-headline {
+  color: #fff;
+}
+
+.finale__final-cta {
+  margin-top: 28px;
+
+  pointer-events: auto;
+}
+
+
+/* ---------------------------------------------------------
+   #finale — mobile (900px and below)
+
+   No pin — .finale__pool becomes a simple 70vh card sitting in
+   normal flow, with its own scrubbed (not pinned) clip-path as
+   the section scrolls past. .finale__headline needs no
+   override here: it's nested inside .finale__pool (see
+   villa.html), so "left:6vw / top:50%" above continues to
+   overlay it correctly, just relative to this smaller card
+   instead of the full viewport.
+
+   Phase 2's elements all drop their absolute/full-stage
+   positioning here, stacking in plain normal flow instead:
+   .finale__arch becomes a simple rounded-top card (not a
+   full-screen sweep), .finale__expand becomes a normal-sized
+   thumbnail block sized directly (no clip-path-from-geometry
+   trick needed — that's only useful for the desktop full-
+   screen-overlay design), and .finale__thumb-slot is hidden
+   entirely since nothing reads its geometry on mobile. Each
+   piece gets a plain independent fade-up in script2.js's
+   mobile(), same as every other scene — which is also why
+   .finale__expand/.finale__thumb/.finale__logo/.finale__
+   statement all need opacity reset back to 1 here: their
+   desktop rest state is opacity:0 (see above, now that Phase 3
+   made them transient), and gsap.from()'s reveal needs a
+   visible "natural" value to animate toward.
+
+   Phase 3 doesn't reuse .finale__expand for its own "rooftop
+   image block" on mobile — unlike desktop, mobile has no
+   scrubbed animation to grow a small thumbnail into a full
+   image, so trying to reuse one element for both the Phase 2
+   thumbnail (small, skyline) and the Phase 3 hero image (large,
+   rooftop) would mean one of them is always wrong. .finale__
+   expand keeps showing skyline at thumbnail size (its established
+   Phase 2 role); .finale__final — otherwise just a full-stage
+   text/gradient overlay on desktop — becomes its own 70vh card
+   with the rooftop photo as a CSS background-image instead
+   (its height is fixed regardless of image load, so this has
+   none of the layout-shift risk a sizeless <img> would).
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  #finale {
+    height: auto;
+
+    overflow: visible;
+
+    padding: 10vh 0;
+  }
+
+  .finale__pool {
+    position: relative;
+    inset: auto;
+
+    width: calc(100% - 12vw);
+
+    /* svh fallback-then-override, see .villa-hero-stage's
+       comment — matters most right here, of every height on the
+       page: this card sits in plain scrollable flow on mobile,
+       so without svh it would visibly grow as the address bar
+       hides mid-scroll, unlike the pinned desktop stages above. */
+    height: 70vh;
+    height: 70svh;
+
+    margin: 0 6vw;
+
+    clip-path: inset(0% round 14px);
+  }
+
+  #finale .finale__headline {
+    max-width: 70%;
+  }
+
+  /*
+    Same --paper colour as #finale's own background behind it,
+    so the rounded top edge needs a border to actually read as
+    an "arch" shape here — on desktop the same shape is visible
+    simply by contrast against the pool video it covers, but on
+    mobile .finale__arch just sits in plain flow with nothing
+    behind it to contrast against (confirmed via Playwright: the
+    shape was structurally correct but completely invisible).
+  */
+  .finale__arch {
+    position: relative;
+    left: auto;
+    bottom: auto;
+
+    width: 100%;
+    height: auto;
+
+    margin-top: 10vh;
+
+    border: 1px solid var(--line);
+    border-bottom: none;
+
+    /* horizontal/vertical radii split (the "/" syntax) — a
+       fixed vertical curve (60px) regardless of how tall this
+       block ends up (its height is auto, driven by the
+       statement's own content), rather than 50% of that
+       variable height producing an oversized oval. */
+    border-radius: 50% 50% 0 0 / 60px 60px 0 0;
+  }
+
+  /* No longer cancelling the desktop 130vh/100vh mismatch —
+     .finale__arch itself is auto-height here, so this just
+     becomes the padded block holding the logo + statement. */
+  .finale__arch-content {
+    position: static;
+
+    width: auto;
+    height: auto;
+
+    padding: 10vh 6vw 8vh;
+  }
+
+  #finale .finale__logo {
+    position: static;
+
+    margin-bottom: 24px;
+
+    text-align: center;
+
+    opacity: 1;
+  }
+
+  #finale .finale__statement {
+    position: static;
+
+    transform: none;
+
+    max-width: 100%;
+
+    opacity: 1;
+  }
+
+  .finale__expand {
+    position: relative;
+    inset: auto;
+
+    width: 60vw;
+    max-width: 320px;
+
+    aspect-ratio: 3 / 2;
+
+    margin: 6vh auto 0;
+
+    border-radius: 10px;
+
+    opacity: 1;
+  }
+
+  /* Mobile shows this element at thumbnail size only (Phase 2's
+     role) — rooftop is shown separately below, at full card
+     size, via .finale__final's own background-image. */
+  .finale__expand-image--skyline {
+    opacity: 1;
+  }
+
+  .finale__expand-image--rooftop {
+    display: none;
+  }
+
+  .finale__thumb {
+    position: relative;
+    right: auto;
+    bottom: auto;
+
+    display: block;
+
+    margin: 16px auto 0;
+
+    opacity: 1;
+
+    text-align: center;
+  }
+
+  .finale__thumb-slot {
+    display: none;
+  }
+
+  .finale__final {
+    position: relative;
+    inset: auto;
+
+    width: calc(100% - 12vw);
+
+    /* svh fallback-then-override, see .finale__pool's comment
+       just above (the same concern applies here). */
+    height: 70vh;
+    height: 70svh;
+
+    margin: 10vh 6vw 0;
+
+    background: var(--ink) url("assets/story/rooftop.webp") center / cover no-repeat;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    pointer-events: auto;
+  }
+
+  .finale__final-content {
+    max-width: 80%;
+  }
+
+}

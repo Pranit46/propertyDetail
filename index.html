@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Aaroh Residences — The Villa</title>
+
+  <!--
+    Instrument Serif (regular + italic) — the site had no
+    editorial serif anywhere (confirmed: no @font-face, no font
+    <link>, document.fonts was empty, every ".display"/".label"
+    headline was silently rendering in the plain Arial fallback).
+    Scoped to .story .display only in style2.css — this doesn't
+    touch the hero/villa-section type elsewhere on the page.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet"
+  />
+
+  <!--
+    style.css is linked (not copied) for the shared reset,
+    body font-family and base background/text color — index.html
+    has no nav, header or CSS variables, so that's all there is
+    to reuse from it. All new rules live in style2.css.
+  -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style2.css" />
+</head>
+
+<body>
+
+  <!--
+    No nav/header: index.html doesn't have one either, so
+    this page matches that rather than inventing new chrome.
+  -->
+
+  <!-- =========================================================
+       HERO — SCROLL-CONTROLLED VIDEO
+
+       400vh wrapper + position:sticky stage. The video never
+       autoplays and .play() is never called — scrolling drives
+       currentTime directly (via script2.js). See script2.js for
+       the easing/seek logic and the constants you can tune.
+  ========================================================== -->
+
+  <div class="villa-hero-wrapper" id="villa-hero-wrapper">
+
+    <div class="villa-hero-stage">
+
+      <!--
+        HERO_VIDEO_SRC constant: edit this src AND the
+        HERO_VIDEO_SRC constant at the top of script2.js when
+        renaming the file (script2.js also re-applies its own
+        constant on load, so editing just the JS constant is
+        enough in practice — the literal path here is kept in
+        sync for anyone viewing source / with JS disabled).
+      -->
+      <video
+        class="villa-hero-video"
+        id="villa-hero-video"
+        muted
+        playsinline
+        preload="auto"
+        poster="assets/hero-poster.jpg"
+      >
+        <source src="assets/hero-scrub.mp4" type="video/mp4" />
+      </video>
+
+      <div class="villa-hero-overlay"></div>
+
+      <!-- INTRO OVERLAY (visible progress 0 → 0.2) -->
+      <div class="villa-hero-intro" id="villa-hero-intro">
+
+        <div class="villa-hero-eyebrow">
+          <span></span>
+          A NEW WAY OF LIVING
+        </div>
+
+        <h1 class="villa-hero-title">
+          SOME ADDRESSES<br />
+          ARE FOUND.
+        </h1>
+
+        <!-- Placeholder subline copy — edit freely. -->
+        <p class="villa-hero-subline">
+          A private villa, designed around light, proportion
+          and quiet craftsmanship.
+        </p>
+
+        <div class="villa-hero-actions">
+          <a href="#scene-intro" class="villa-btn villa-btn-primary">Explore The Villa</a>
+          <a href="#finale" class="villa-btn villa-btn-secondary">Enquire Now</a>
+        </div>
+
+      </div>
+
+      <div class="villa-scroll-indicator" id="villa-scroll-indicator">
+        <span>SCROLL</span>
+        <div class="villa-scroll-line"></div>
+      </div>
+
+      <!-- CLOSING OVERLAY (fades in progress ~0.85 → 1) -->
+      <div class="villa-hero-closing" id="villa-hero-closing">
+
+        <!--
+          LOGO PLACEHOLDER
+          Reserved, centred, empty. Drop the final
+          blueprint-reveal logo (image or inline SVG) in here —
+          sized by .villa-hero-logo-slot in style2.css so it
+          lands pre-centred with no further CSS changes.
+        -->
+        <div class="villa-hero-logo-slot" id="villa-hero-logo-slot"></div>
+
+        <p class="villa-hero-closing-line">
+          AAROH RESIDENCES — MUMBAI, INDIA.
+        </p>
+
+        <a href="#finale" class="villa-btn villa-btn-primary">Enquire Now</a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       SCROLL STORY — FOUNDATION ONLY
+
+       5 empty scenes. Later prompts fill one scene each with
+       copy/images/animation — see script2.js's scene-registry
+       scaffold (registerScene / initStory) for how each scene
+       will wire itself up without touching this file's other
+       scenes or the hero above.
+
+       STORY IMAGES — role → optimized file (assets/story/*.webp)
+       Originals (untouched) live in assets/images/*.png.
+
+         living-room → assets/story/living-room.webp  (portrait 3:4)
+         kitchen     → assets/story/kitchen.webp       (portrait 3:4)
+         bedroom     → assets/story/bedroom.webp       (portrait 3:4)
+         bathroom    → assets/story/bathroom.webp      (portrait 3:4)
+         atrium      → assets/story/atrium.webp        (portrait)
+         wellness    → assets/story/wellness.webp      (landscape)
+         spa         → assets/story/spa.webp           (landscape)
+         lounge      → assets/story/lounge.webp        (landscape)
+         pool        → assets/story/pool.webp          (16:9)
+         skyline     → assets/story/skyline.webp       (3:2)
+         rooftop     → assets/story/rooftop.webp       (16:9)
+
+       All 11 roles had a clear, unambiguous source image in
+       assets/images/ (verified by opening each one) — nothing
+       to flag.
+  ========================================================== -->
+
+  <main class="story">
+
+    <section id="scene-intro" class="scene-intro">
+
+      <div class="scene-intro-label label">Aaroh Residences</div>
+
+      <h2 class="scene-intro-headline display">
+        Step into a <em>quieter</em> life.
+      </h2>
+
+      <div class="scene-intro-arches">
+
+        <figure class="scene-intro-arch">
+          <div class="arch">
+            <img
+              src="assets/story/living-room.webp"
+              alt="The living room"
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="label">The living room</figcaption>
+        </figure>
+
+        <figure class="scene-intro-arch">
+          <div class="arch">
+            <img
+              src="assets/story/kitchen.webp"
+              alt="The kitchen"
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="label">The kitchen</figcaption>
+        </figure>
+
+        <figure class="scene-intro-arch">
+          <div class="arch">
+            <img
+              src="assets/story/bedroom.webp"
+              alt="The bedroom"
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="label">The bedroom</figcaption>
+        </figure>
+
+        <figure class="scene-intro-arch">
+          <div class="arch">
+            <img
+              src="assets/story/bathroom.webp"
+              alt="The bathroom"
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+          <figcaption class="label">The bathroom</figcaption>
+        </figure>
+
+      </div>
+
+      <div class="scene-intro-amenities label">The amenities</div>
+
+    </section>
+
+    <section id="scene-amenities" class="scene-amenities">
+
+      <div class="scene-amenities-left">
+
+        <div class="scene-amenities-heading">
+          <div class="scene-amenities-label label">The amenities</div>
+          <h2 class="scene-amenities-headline display">
+            Five ways to spend a <em>day.</em>
+          </h2>
+        </div>
+
+        <!--
+          Desktop only: the five images stacked on top of each
+          other, cycled via clip-path as the list is scrubbed.
+          (Hidden on mobile — each row has its own image instead.
+          Both sets use loading="lazy", and a display:none image
+          never becomes near-viewport, so only the active
+          breakpoint's images actually get fetched.)
+        -->
+        <div class="scene-amenities-panel">
+
+          <figure class="scene-amenities-image is-active">
+            <img
+              src="assets/story/atrium.webp"
+              alt="Garden atrium"
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="scene-amenities-image">
+            <img
+              src="assets/story/wellness.webp"
+              alt="Wellness studio"
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="scene-amenities-image">
+            <img
+              src="assets/story/spa.webp"
+              alt="Spa and sauna"
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="scene-amenities-image">
+            <img
+              src="assets/story/lounge.webp"
+              alt="Residents' lounge"
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+
+          <figure class="scene-amenities-image">
+            <img
+              src="assets/story/pool.webp"
+              alt="Sky pool"
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </figure>
+
+        </div>
+
+      </div>
+
+      <!-- Placeholder one-line descriptions below — edit freely. -->
+
+      <div class="scene-amenities-list">
+
+        <div class="scene-amenities-row is-active">
+
+          <div class="scene-amenities-row-image">
+            <img
+              src="assets/story/atrium.webp"
+              alt=""
+              width="1086"
+              height="1448"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="scene-amenities-row-number label">01</span>
+
+          <div class="scene-amenities-row-body">
+            <h3 class="scene-amenities-row-name">Garden atrium</h3>
+            <p class="scene-amenities-row-desc">A quiet courtyard, open to the sky.</p>
+          </div>
+
+        </div>
+
+        <div class="scene-amenities-row">
+
+          <div class="scene-amenities-row-image">
+            <img
+              src="assets/story/wellness.webp"
+              alt=""
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="scene-amenities-row-number label">02</span>
+
+          <div class="scene-amenities-row-body">
+            <h3 class="scene-amenities-row-name">Wellness studio</h3>
+            <p class="scene-amenities-row-desc">Space to move, stretch, and reset.</p>
+          </div>
+
+        </div>
+
+        <div class="scene-amenities-row">
+
+          <div class="scene-amenities-row-image">
+            <img
+              src="assets/story/spa.webp"
+              alt=""
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="scene-amenities-row-number label">03</span>
+
+          <div class="scene-amenities-row-body">
+            <h3 class="scene-amenities-row-name">Spa and sauna</h3>
+            <p class="scene-amenities-row-desc">Warmth and stillness, steps from home.</p>
+          </div>
+
+        </div>
+
+        <div class="scene-amenities-row">
+
+          <div class="scene-amenities-row-image">
+            <img
+              src="assets/story/lounge.webp"
+              alt=""
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="scene-amenities-row-number label">04</span>
+
+          <div class="scene-amenities-row-body">
+            <h3 class="scene-amenities-row-name">Residents&rsquo; lounge</h3>
+            <p class="scene-amenities-row-desc">A room built for slow afternoons.</p>
+          </div>
+
+        </div>
+
+        <div class="scene-amenities-row">
+
+          <div class="scene-amenities-row-image">
+            <img
+              src="assets/story/pool.webp"
+              alt=""
+              width="1672"
+              height="941"
+              decoding="async"
+              loading="lazy"
+            />
+          </div>
+
+          <span class="scene-amenities-row-number label">05</span>
+
+          <div class="scene-amenities-row-body">
+            <h3 class="scene-amenities-row-name">Sky pool</h3>
+            <p class="scene-amenities-row-desc">The horizon, held at the edge of the water.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================
+         #scene-journey — merged arch (lead) + horizontal gallery
+
+         Was two separate pinned sections (#scene-slower,
+         #scene-gallery) with a dead gap between their two pins —
+         now one pin, one master timeline, one continuous motion.
+         See script2.js's registerScene() for the timeline; see
+         style2.css for .journey / .journey__*.
+
+         #scene-journey itself carries NO padding/margin (required
+         so there's no blank band before/after the pin) — all
+         spacing lives on .journey__lead / .scene-gallery-panel's
+         margin-right instead.
+    ========================================================== -->
+
+    <section id="scene-journey">
+
+      <div class="journey">
+
+        <div class="journey__track">
+
+          <div class="journey__lead">
+
+            <div class="scene-slower-text">
+
+              <div class="scene-slower-label label">The residences</div>
+
+              <h2 class="scene-slower-headline display">
+                Room to <em>breathe,</em> by design.
+              </h2>
+
+              <!-- Placeholder paragraph — edit freely. -->
+              <p class="scene-slower-paragraph">
+                Each residence is planned around proportion and quiet —
+                generous rooms, considered light, and space left
+                unhurried on purpose.
+              </p>
+
+              <button type="button" class="villa-btn journey__start">
+                Start exploring
+              </button>
+
+            </div>
+
+            <figure class="scene-slower-figure">
+              <div class="arch">
+                <img
+                  src="assets/story/atrium.webp"
+                  alt="Garden atrium"
+                  width="1086"
+                  height="1448"
+                  decoding="async"
+                  loading="lazy"
+                />
+              </div>
+            </figure>
+
+          </div>
+
+          <div class="scene-gallery-panel">
+
+            <figure class="scene-gallery-image">
+              <img
+                src="assets/story/wellness.webp"
+                alt="Wellness studio"
+                width="1672"
+                height="941"
+                decoding="async"
+                loading="lazy"
+              />
+
+              <div class="scene-gallery-text">
+                <div class="scene-gallery-label label">Wellness studio</div>
+                <h2 class="scene-gallery-headline display">
+                  Move <em>with ease.</em>
+                </h2>
+              </div>
+            </figure>
+
+          </div>
+
+          <div class="scene-gallery-panel">
+
+            <figure class="scene-gallery-image">
+              <img
+                src="assets/story/spa.webp"
+                alt="Spa and sauna"
+                width="1672"
+                height="941"
+                decoding="async"
+                loading="lazy"
+              />
+
+              <div class="scene-gallery-text">
+                <div class="scene-gallery-label label">Spa and sauna</div>
+                <h2 class="scene-gallery-headline display">
+                  Time to <em>unwind.</em>
+                </h2>
+              </div>
+            </figure>
+
+          </div>
+
+          <div class="scene-gallery-panel">
+
+            <figure class="scene-gallery-image">
+              <img
+                src="assets/story/lounge.webp"
+                alt="Residents' lounge"
+                width="1672"
+                height="941"
+                decoding="async"
+                loading="lazy"
+              />
+
+              <div class="scene-gallery-text">
+                <div class="scene-gallery-label label">Residents&rsquo; lounge</div>
+                <h2 class="scene-gallery-headline display">
+                  Stay a little <em>longer.</em>
+                </h2>
+              </div>
+            </figure>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- =========================================================
+         #finale — pinned, one master timeline (finaleTl), three
+         phases total; this build implements Phase 1 only (the
+         pool card expanding to full-bleed). Phase 2/3 markup
+         lands at the marked insertion points below in later
+         prompts — see script2.js's registerScene() for the
+         matching JS insertion points.
+
+         .finale__headline sits INSIDE .finale__pool (not as a
+         sibling) purely so "left:6vw; top:50%" in style2.css
+         overlays it correctly relative to the pool card's own
+         box at every width, without separate positioning math
+         for desktop (full-bleed) vs mobile (70vh card) — it's
+         still animated completely independently of the pool's
+         own clip-path/scale tweens in script2.js.
+    ========================================================== -->
+
+    <section id="finale">
+
+      <div class="finale__pool">
+
+        <video
+          class="finale__video"
+          muted
+          loop
+          playsinline
+          preload="none"
+          poster="assets/story/pool.webp"
+          aria-hidden="true"
+          tabindex="-1"
+          disablepictureinpicture
+        >
+          <source src="assets/pool-loop-mobile.mp4" media="(max-width: 900px)" />
+          <source src="assets/pool-loop.webm" type="video/webm" />
+          <source src="assets/pool-loop.mp4" type="video/mp4" />
+        </video>
+
+        <div class="finale__pool-overlay"></div>
+
+        <h2 class="finale__headline display">
+          Let the <em>water</em> do the rest.
+        </h2>
+
+      </div>
+
+      <!-- =====================================================
+           PHASE 2 — a pale arch sweeps up to cover the pool; a
+           centered statement + small logo mark appear on it;
+           then a small "neighbourhood" thumbnail reveals
+           bottom-right.
+
+           .finale__logo/.finale__statement sit inside
+           .finale__arch-content, not directly inside
+           .finale__arch — .finale__arch is 130vh tall (so its
+           own rise can start fully below the viewport), and
+           position:absolute children resolve percentage/vh
+           offsets against THEIR OWN containing block. Nested
+           directly in the arch, "top:6vh" would mean 6vh from
+           the arch's own top edge — which sits 30vh above the
+           viewport — landing the logo off-screen entirely
+           (confirmed via Playwright). .finale__arch-content
+           cancels exactly that extra 30vh (130vh - 100vh) so
+           everything inside it can just use plain top:Xvh/X%
+           as if positioned directly against the viewport.
+
+           .finale__expand holds the full-size skyline/rooftop
+           images and is sized to the WHOLE stage (not just the
+           thumbnail) on purpose — its clip-path is computed in
+           script2.js from .finale__thumb-slot's live position/
+           size (getBoundingClientRect), carving out just that
+           small window for now, so a future phase can "expand"
+           the same layer into something larger by animating the
+           clip-path open instead of swapping elements.
+           .finale__thumb-slot itself is never visible — it's a
+           plain geometry reference only.
+      ====================================================== -->
+
+      <div class="finale__arch">
+
+        <div class="finale__arch-content">
+
+          <div class="finale__logo" aria-hidden="true">A.</div>
+
+          <h2 class="finale__statement display">
+            Less noise. <em>More Aaroh.</em>
+          </h2>
+
+        </div>
+
+      </div>
+
+      <div class="finale__expand">
+
+        <figure class="finale__expand-image finale__expand-image--skyline">
+          <img
+            src="assets/story/skyline.webp"
+            alt="City skyline near the residences"
+            width="1536"
+            height="1024"
+            decoding="async"
+            loading="lazy"
+          />
+        </figure>
+
+        <figure class="finale__expand-image finale__expand-image--rooftop">
+          <img
+            src="assets/story/rooftop.webp"
+            alt="Rooftop terrace"
+            width="1672"
+            height="942"
+            decoding="async"
+            loading="lazy"
+          />
+        </figure>
+
+      </div>
+
+      <div class="finale__thumb">
+        <div class="finale__thumb-label label">The neighbourhood</div>
+        <div class="finale__thumb-slot"></div>
+      </div>
+
+      <!-- =====================================================
+           PHASE 3 — the thumbnail grows to a full-screen rooftop
+           image, crossfading from the skyline shown in Phase 2;
+           a bottom-left headline + CTA close the sequence.
+
+           .finale__final (gradient + headline + CTA) is a
+           separate layer from .finale__expand, not nested inside
+           it, even though it only ever becomes visible once
+           .finale__expand is already full-screen — Phase 2's own
+           reveal starts at 86%, 2% before .finale__expand's own
+           clip-path growth finishes at 88%, and .finale__expand
+           clips everything inside it (that's the whole mechanism
+           the small thumbnail used); nesting the headline there
+           would risk it rendering partially clipped for that
+           brief overlap instead of a clean reveal.
+      ====================================================== -->
+
+      <div class="finale__final">
+
+        <div class="finale__final-overlay"></div>
+
+        <div class="finale__final-content">
+
+          <h2 class="finale__final-headline display">
+            Live <em>above it all.</em>
+          </h2>
+
+          <button type="button" class="villa-btn villa-btn-primary finale__final-cta">
+            Enquire now
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =========================================================
+       GSAP
+
+       Same CDN + version as index.html — reused for the
+       section-reveal animations (same library the site already
+       uses, not a new one). The hero scrub above is plain JS
+       per spec; see script2.js.
+
+       SplitText: index.html doesn't load this (it only uses
+       base GSAP + ScrollTrigger) — it's new here, pinned to the
+       same 3.13.0 as the other two. As of 3.13, GSAP's former
+       "Club GreenSock" bonus plugins (SplitText included) ship
+       free in the standard package, so this is still "the
+       library already in use," just a further plugin of it.
+  ========================================================== -->
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollToPlugin.min.js"></script>
+
+  <script src="script2.js"></script>
+
+</body>
+</html>
