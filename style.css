@@ -1,0 +1,840 @@
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  background: #080807;
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: #080807;
+  color: #f5f2eb;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+
+  width: 100%;
+  height: 100svh;
+  min-height: 650px;
+
+  overflow: hidden;
+
+  background: #080807;
+
+  isolation: isolate;
+}
+
+
+/* ---------------------------------------------------------
+   HERO VIDEO CONTAINER
+--------------------------------------------------------- */
+
+.hero-media {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+
+  /* Important for browser compositing */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+
+/* ---------------------------------------------------------
+   HERO VIDEO
+--------------------------------------------------------- */
+
+.hero-video {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center center;
+
+  opacity: 0;
+
+  /*
+    IMPORTANT:
+
+    No scale animation.
+    No transform animation.
+
+    The generated video already contains
+    cinematic camera movement.
+  */
+
+  transform: translateZ(0);
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+
+  will-change: opacity;
+
+  image-rendering: auto;
+}
+
+
+/* =========================================================
+   HERO OVERLAY
+========================================================= */
+
+.hero-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.68) 0%,
+      rgba(0, 0, 0, 0.28) 48%,
+      rgba(0, 0, 0, 0.08) 100%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.12) 0%,
+      rgba(0, 0, 0, 0.72) 100%
+    );
+}
+
+
+/* =========================================================
+   FILM GRAIN
+========================================================= */
+
+.film-grain {
+  position: absolute;
+
+  inset: -50%;
+
+  z-index: 3;
+
+  pointer-events: none;
+
+  opacity: 0.035;
+
+  /*
+    Isolates the continuously-animating grain texture onto its
+    own compositor layer so its repaint doesn't get bundled with
+    the pinned section's own scroll-driven repaints.
+  */
+  will-change: transform;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+
+  animation: grain 0.25s steps(2) infinite;
+}
+
+@keyframes grain {
+
+  0% {
+    transform: translate(0, 0);
+  }
+
+  25% {
+    transform: translate(-2%, 1%);
+  }
+
+  50% {
+    transform: translate(1%, -2%);
+  }
+
+  75% {
+    transform: translate(2%, 2%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 8vw;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  max-width: 850px;
+
+  pointer-events: none;
+
+  will-change: transform, opacity;
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.hero-eyebrow {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+
+  font-size: 10px;
+
+  letter-spacing: 0.32em;
+
+  color: rgba(245, 242, 235, 0.65);
+}
+
+.hero-eyebrow span {
+  width: 45px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.55);
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.hero-title {
+  font-size: clamp(70px, 10vw, 150px);
+
+  font-weight: 300;
+
+  line-height: 0.82;
+
+  letter-spacing: -0.065em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HERO SUBTITLE
+========================================================= */
+
+.hero-subtitle {
+  margin-top: 25px;
+
+  font-size: clamp(35px, 5vw, 70px);
+
+  font-weight: 300;
+
+  line-height: 0.9;
+
+  letter-spacing: -0.045em;
+
+  color: rgba(245, 242, 235, 0.55);
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HERO PROJECT
+========================================================= */
+
+.hero-project {
+  margin-top: 55px;
+
+  opacity: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  font-size: 10px;
+
+  letter-spacing: 0.25em;
+}
+
+.project-line {
+  width: 60px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.45);
+}
+
+.hero-project p {
+  color: rgba(245, 242, 235, 0.85);
+}
+
+.hero-project span {
+  color: rgba(245, 242, 235, 0.45);
+}
+
+
+/* =========================================================
+   SCROLL INDICATOR
+========================================================= */
+
+.scroll-indicator {
+  position: absolute;
+
+  z-index: 5;
+
+  right: 8vw;
+
+  bottom: 7vh;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  font-size: 9px;
+
+  letter-spacing: 0.25em;
+
+  color: rgba(245, 242, 235, 0.55);
+}
+
+.scroll-line {
+  width: 1px;
+
+  height: 55px;
+
+  transform-origin: top;
+
+  background: rgba(245, 242, 235, 0.45);
+}
+
+
+/* =========================================================
+   ARRIVAL
+========================================================= */
+
+.arrival {
+  position: relative;
+
+  width: 100%;
+
+  height: 100svh;
+
+  min-height: 650px;
+
+  overflow: hidden;
+
+  background: #080807;
+
+  isolation: isolate;
+}
+
+
+/* =========================================================
+   ARRIVAL MEDIA
+========================================================= */
+
+.arrival-media {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  z-index: 1;
+
+  transform: translateZ(0);
+
+  backface-visibility: hidden;
+}
+
+
+/* =========================================================
+   ARRIVAL VIDEO
+========================================================= */
+
+.arrival-video {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center center;
+
+  opacity: 0;
+
+  /*
+    Absolutely no scale animation.
+
+    This is intentional.
+  */
+
+  transform: translateZ(0);
+
+  backface-visibility: hidden;
+
+  -webkit-backface-visibility: hidden;
+
+  will-change: opacity;
+
+  image-rendering: auto;
+}
+
+
+/* =========================================================
+   ARRIVAL OVERLAY
+========================================================= */
+
+.arrival-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.72) 0%,
+      rgba(0, 0, 0, 0.30) 45%,
+      rgba(0, 0, 0, 0.08) 100%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.10) 0%,
+      rgba(0, 0, 0, 0.68) 100%
+    );
+}
+
+
+/* =========================================================
+   ARRIVAL CONTENT
+========================================================= */
+
+.arrival-content {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 8vw;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  max-width: 650px;
+
+  will-change: transform, opacity;
+}
+
+
+/* =========================================================
+   ARRIVAL LABEL
+========================================================= */
+
+.arrival-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+
+  font-size: 10px;
+
+  letter-spacing: 0.32em;
+
+  color: rgba(245, 242, 235, 0.62);
+}
+
+.arrival-label span {
+  width: 45px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.55);
+}
+
+
+/* =========================================================
+   ARRIVAL TITLE
+========================================================= */
+
+.arrival-title {
+  font-size: clamp(70px, 10vw, 150px);
+
+  font-weight: 300;
+
+  line-height: 0.82;
+
+  letter-spacing: -0.065em;
+
+  text-transform: uppercase;
+}
+
+.arrival-title span {
+  color: rgba(245, 242, 235, 0.55);
+}
+
+
+/* =========================================================
+   ARRIVAL DESCRIPTION
+========================================================= */
+
+.arrival-description {
+  margin-top: 45px;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  letter-spacing: 0.04em;
+
+  color: rgba(245, 242, 235, 0.68);
+}
+
+
+/* =========================================================
+   ARRIVAL META
+========================================================= */
+
+.arrival-meta {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 8vw;
+
+  right: 8vw;
+
+  bottom: 7vh;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  font-size: 9px;
+
+  letter-spacing: 0.25em;
+
+  color: rgba(245, 242, 235, 0.5);
+}
+
+.arrival-meta-line {
+  width: 60px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.35);
+}
+
+
+/* =========================================================
+   THE ARCHITECTURE — SECTION 03
+========================================================= */
+
+.architecture {
+  position: relative;
+
+  width: 100%;
+
+  height: 100svh;
+
+  min-height: 650px;
+
+  overflow: hidden;
+
+  background: #060608;
+
+  isolation: isolate;
+}
+
+
+/* ---------------------------------------------------------
+   ARCHITECTURE CANVAS
+--------------------------------------------------------- */
+
+.architecture-canvas-wrap {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+
+  /* No controls yet — nothing on the canvas is interactive. */
+  pointer-events: none;
+}
+
+.architecture-canvas {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* =========================================================
+   ARCHITECTURE OVERLAY
+
+   The 3D scene is already dark and controlled, so this only
+   needs to be a light guarantee of text contrast against the
+   left side of the frame — not a heavy video-style vignette.
+========================================================= */
+
+.architecture-overlay {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.55) 0%,
+      rgba(0, 0, 0, 0.18) 42%,
+      rgba(0, 0, 0, 0.02) 100%
+    ),
+
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.22) 100%
+    );
+}
+
+
+/* =========================================================
+   ARCHITECTURE CONTENT
+========================================================= */
+
+.architecture-content {
+  position: absolute;
+
+  z-index: 5;
+
+  left: 8vw;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  max-width: 620px;
+}
+
+
+/* =========================================================
+   ARCHITECTURE LABEL
+========================================================= */
+
+.architecture-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-bottom: 32px;
+
+  font-size: 10px;
+
+  letter-spacing: 0.32em;
+
+  color: rgba(245, 242, 235, 0.62);
+}
+
+.architecture-label span {
+  width: 45px;
+
+  height: 1px;
+
+  background: rgba(245, 242, 235, 0.55);
+}
+
+
+/* =========================================================
+   ARCHITECTURE TITLE
+
+   A full sentence, not the one/two-word lines the hero and
+   arrival titles use — so it gets its own, smaller clamp
+   rather than inheriting their huge display size.
+========================================================= */
+
+.architecture-title {
+  font-size: clamp(38px, 5.2vw, 84px);
+
+  font-weight: 300;
+
+  line-height: 0.95;
+
+  letter-spacing: -0.03em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   ARCHITECTURE DESCRIPTION
+========================================================= */
+
+.architecture-description {
+  margin-top: 40px;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+
+  letter-spacing: 0.04em;
+
+  color: rgba(245, 242, 235, 0.68);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero,
+  .arrival,
+  .architecture {
+    min-height: 650px;
+  }
+
+  .hero-content,
+  .arrival-content,
+  .architecture-content {
+    left: 7vw;
+
+    right: 7vw;
+  }
+
+  .hero-title,
+  .arrival-title {
+    font-size: clamp(
+      62px,
+      18vw,
+      110px
+    );
+  }
+
+  .architecture-title {
+    font-size: clamp(34px, 11vw, 56px);
+  }
+
+  .hero-subtitle {
+    font-size: clamp(
+      32px,
+      9vw,
+      60px
+    );
+  }
+
+  .hero-project {
+    margin-top: 40px;
+
+    flex-wrap: wrap;
+
+    max-width: 300px;
+  }
+
+  .arrival-description,
+  .architecture-description {
+    font-size: 13px;
+  }
+
+  .scroll-indicator {
+    right: 7vw;
+
+    bottom: 5vh;
+  }
+
+  .arrival-meta {
+    left: 7vw;
+
+    right: 7vw;
+
+    bottom: 5vh;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .film-grain {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+}
